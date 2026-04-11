@@ -1,0 +1,18 @@
+<h2>📋 All Transactions</h2>
+
+<div *ngIf="transactions.length; else empty">
+
+  <div *ngFor="let t of transactions" class="item">
+    <span>{{ t.title }}</span>
+    <span>₹{{ t.amount }}</span>
+    <span [style.color]="t.type === 'income' ? '#4CAF50' : '#FF5252'">
+      {{ t.type }}
+    </span>
+    <button (click)="delete(t.id)">❌</button>
+  </div>
+
+</div>
+
+<ng-template #empty>
+  <div class="empty">Start adding your transactions 💡</div>
+</ng-template>

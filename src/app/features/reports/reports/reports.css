@@ -1,0 +1,57 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* Card */
+.card {
+  padding: 20px;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+
+  /* ✅ FIX HEIGHT */
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Bigger chart (line only) */
+.full {
+  grid-column: span 2;
+  height: 350px;
+}
+
+/* ✅ CONTROL CANVAS SIZE */
+canvas {
+  max-width: 100%;
+  max-height: 220px;   /* 🔥 key fix */
+  margin-top: 10px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full {
+    grid-column: span 1;
+    height: 300px;
+  }
+}
+
+.filter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.insights {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+}

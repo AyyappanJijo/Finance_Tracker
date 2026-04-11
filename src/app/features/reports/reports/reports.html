@@ -1,0 +1,33 @@
+<h2>📊 Financial Insights</h2>
+
+<!-- 📅 FILTER -->
+<div class="filter">
+  <input type="date" [(ngModel)]="fromDate" />
+  <input type="date" [(ngModel)]="toDate" />
+  <button (click)="applyFilter()">Apply</button>
+</div>
+
+<!-- 🧠 INSIGHTS -->
+<div class="insights">
+  <p>{{ insight }}</p>
+  <p><strong>Top Category:</strong> {{ topCategory }}</p>
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <h3>Income vs Expense</h3>
+    <canvas id="doughnutChart"></canvas>
+  </div>
+
+  <div class="card">
+    <h3>Category Breakdown</h3>
+    <canvas id="barChart"></canvas>
+  </div>
+
+  <div class="card full">
+    <h3>Spending Trend</h3>
+    <canvas id="lineChart"></canvas>
+  </div>
+
+</div>

@@ -1,0 +1,36 @@
+<nav class="navbar">
+
+  <!-- Logo -->
+  <div class="logo">
+    💸 FinTrack
+  </div>
+
+  <!-- Desktop Menu -->
+  <div class="links" [class.active]="isOpen">
+    <a routerLink="" routerLinkActive="active">Dashboard</a>
+    <a routerLink="add" routerLinkActive="active">Add</a>
+    <a routerLink="transactions" routerLinkActive="active">Transactions</a>
+    <a routerLink="reports" routerLinkActive="active">Reports</a>
+  </div>
+
+  <!-- Right Section -->
+  <div class="right">
+
+    <!-- Balance -->
+    <div class="balance">
+      ₹{{ balance }}
+    </div>
+
+    <!-- User -->
+    <div class="user">
+      👋 {{ username }}
+    </div>
+
+    <!-- Mobile Toggle -->
+    <div class="menu" (click)="toggleMenu()">
+      ☰
+    </div>
+
+  </div>
+
+</nav>
