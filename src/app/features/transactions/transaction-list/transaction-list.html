@@ -1,0 +1,103 @@
+<h1 class="page-title animate-fadeUp">💳 Transactions</h1>
+
+<!-- SUMMARY ROW -->
+<div class="summary-row animate-fadeUp delay-1">
+  <div class="summary-item income-sum">
+    <span class="s-label">Filtered Income</span>
+    <span class="s-value">+₹{{ getTotal('income') | number:'1.0-0' }}</span>
+  </div>
+  <div class="summary-item expense-sum">
+    <span class="s-label">Filtered Expenses</span>
+    <span class="s-value">-₹{{ getTotal('expense') | number:'1.0-0' }}</span>
+  </div>
+  <div class="summary-item count-sum">
+    <span class="s-label">Transactions</span>
+    <span class="s-value">{{ filtered.length }}</span>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="card filters-card animate-fadeUp delay-2">
+
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (ngModelChange)="applyFilters()"
+      placeholder="Search by title or category..."
+      class="search-input"
+    />
+  </div>
+
+  <div class="filter-row">
+    <select [(ngModel)]="filterType" (ngModelChange)="applyFilters()">
+      <option value="all">All Types</option>
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+    </select>
+
+    <select [(ngModel)]="filterCat" (ngModelChange)="applyFilters()">
+      <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+    </select>
+
+    <select [(ngModel)]="sortBy" (ngModelChange)="applyFilters()">
+      <option value="date-desc">Newest First</option>
+      <option value="date-asc">Oldest First</option>
+      <option value="amount-desc">Highest Amount</option>
+      <option value="amount-asc">Lowest Amount</option>
+    </select>
+
+    <button class="btn-ghost" (click)="exportCSV()">📥 Export CSV</button>
+  </div>
+
+</div>
+
+<!-- EMPTY STATE -->
+<div *ngIf="filtered.length === 0" class="empty-state card animate-scaleIn">
+  <div style="font-size:52px; margin-bottom:12px;">📭</div>
+  <p>No transactions match your filters.</p>
+</div>
+
+<!-- TRANSACTION LIST -->
+<div class="tx-list" *ngIf="filtered.length > 0">
+  <div
+    *ngFor="let t of filtered; trackBy: trackById; let i = index"
+    class="tx-item card animate-fadeUp"
+    [style.animation-delay]="(i * 0.04) + 's'"
+  >
+
+    <div class="tx-icon" [style.background]="getCategoryColor(t.category) + '22'">
+      {{ getCategoryIcon(t.category) }}
+    </div>
+
+    <div class="tx-info">
+      <div class="tx-title">{{ t.title }}</div>
+      <div class="tx-meta">
+        <span class="badge" [class.badge-income]="t.type === 'income'" [class.badge-expense]="t.type === 'expense'">
+          {{ t.type }}
+        </span>
+        <span>{{ t.category }}</span>
+        <span>{{ t.date }}</span>
+        <span *ngIf="t.note" class="tx-note">💬 {{ t.note }}</span>
+      </div>
+    </div>
+
+    <div class="tx-amount" [class.income]="t.type === 'income'" [class.expense]="t.type === 'expense'">
+      {{ t.type === 'income' ? '+' : '-' }}₹{{ t.amount | number:'1.0-0' }}
+    </div>
+
+    <div class="tx-actions">
+      <button class="btn-ghost icon-btn" (click)="edit(t.id)" title="Edit">✏️</button>
+      <button class="btn-danger icon-btn" (click)="confirmDelete(t.id)" title="Delete">🗑️</button>
+    </div>
+
+    <!-- Delete Confirmation Inline -->
+    <div class="delete-confirm" *ngIf="deleteConfirmId === t.id">
+      <span>Delete this transaction?</span>
+      <button class="btn-danger" (click)="doDelete(t.id)">Yes, Delete</button>
+      <button class="btn-ghost" (click)="cancelDelete()">Cancel</button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,83 @@
+<h1 class="page-title animate-fadeUp">{{ editMode ? '✏️ Edit Transaction' : '➕ Add Transaction' }}</h1>
+
+<!-- PREVIEW BALANCE CARD -->
+<div class="card preview-card animate-fadeUp delay-1">
+  <div class="preview-label">Balance after this transaction</div>
+  <div class="preview-value" [class.positive]="previewBalance >= 0" [class.negative]="previewBalance < 0">
+    {{ previewBalance >= 0 ? '+' : '' }}₹{{ previewBalance | number:'1.0-0' }}
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="card form-card animate-fadeUp delay-2">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <div class="form-grid">
+
+      <!-- TITLE -->
+      <div class="field span-2">
+        <label>Transaction Title *</label>
+        <input type="text" formControlName="title" placeholder="e.g. Monthly Salary, Grocery Run" />
+        <span class="error" *ngIf="isInvalid('title')">Title must be at least 2 characters</span>
+      </div>
+
+      <!-- AMOUNT -->
+      <div class="field">
+        <label>Amount (₹) *</label>
+        <input type="number" formControlName="amount" placeholder="0.00" min="1" />
+        <span class="error" *ngIf="isInvalid('amount')">Enter a valid amount (min ₹1)</span>
+      </div>
+
+      <!-- DATE -->
+      <div class="field">
+        <label>Date *</label>
+        <input type="date" formControlName="date" />
+      </div>
+
+      <!-- TYPE -->
+      <div class="field">
+        <label>Type *</label>
+        <div class="type-toggle">
+          <button type="button"
+            [class.active-expense]="form.get('type')?.value === 'expense'"
+            (click)="form.get('type')?.setValue('expense')">
+            📤 Expense
+          </button>
+          <button type="button"
+            [class.active-income]="form.get('type')?.value === 'income'"
+            (click)="form.get('type')?.setValue('income')">
+            📥 Income
+          </button>
+        </div>
+      </div>
+
+      <!-- CATEGORY -->
+      <div class="field">
+        <label>Category *</label>
+        <select formControlName="category">
+          <option value="">Select a category</option>
+          <option *ngFor="let c of categories" [value]="c">
+            {{ getCategoryIcon(c) }} {{ c }}
+          </option>
+        </select>
+        <span class="error" *ngIf="isInvalid('category')">Please select a category</span>
+      </div>
+
+      <!-- NOTE -->
+      <div class="field span-2">
+        <label>Note (optional)</label>
+        <input type="text" formControlName="note" placeholder="Any additional details..." />
+      </div>
+
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-ghost" routerLink="/app/transactions">Cancel</button>
+      <button type="submit" class="btn-primary">
+        {{ editMode ? 'Update Transaction' : 'Add Transaction' }}
+      </button>
+    </div>
+
+  </form>
+</div>
+

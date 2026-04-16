@@ -1,0 +1,115 @@
+<!-- SKELETON LOADER -->
+<div *ngIf="loading" class="skeleton-grid">
+  <div class="skeleton" style="height:120px; border-radius:16px;" *ngFor="let i of [1,2,3,4]"></div>
+</div>
+
+<div *ngIf="!loading" class="dashboard">
+
+  <h1 class="page-title animate-fadeUp">Dashboard</h1>
+
+  <!-- STAT CARDS -->
+  <div class="stats-grid">
+
+    <div class="stat-card income-card animate-fadeUp delay-1">
+      <div class="stat-header">
+        <div class="stat-icon">💚</div>
+        <span class="stat-label">Total Income</span>
+      </div>
+      <div class="stat-value">₹{{ income | number:'1.0-0' }}</div>
+      <div class="stat-sub">This month</div>
+    </div>
+
+    <div class="stat-card expense-card animate-fadeUp delay-2">
+      <div class="stat-header">
+        <div class="stat-icon">🔴</div>
+        <span class="stat-label">Total Expenses</span>
+      </div>
+      <div class="stat-value">₹{{ expense | number:'1.0-0' }}</div>
+      <div class="stat-sub">This month</div>
+    </div>
+
+    <div class="stat-card balance-card animate-fadeUp delay-3">
+      <div class="stat-header">
+        <div class="stat-icon">💰</div>
+        <span class="stat-label">Net Balance</span>
+      </div>
+      <div class="stat-value" [class.positive]="balance >= 0" [class.negative]="balance < 0">
+        {{ balance >= 0 ? '+' : '' }}₹{{ balance | number:'1.0-0' }}
+      </div>
+      <div class="stat-sub">Available funds</div>
+    </div>
+
+    <div class="stat-card savings-card animate-fadeUp delay-4">
+      <div class="stat-header">
+        <div class="stat-icon">📈</div>
+        <span class="stat-label">Savings Rate</span>
+      </div>
+      <div class="stat-value" [class.positive]="savings >= 20" [class.warning]="savings > 0 && savings < 20" [class.negative]="savings < 0">
+        {{ savings }}%
+      </div>
+      <div class="stat-sub">Of income saved</div>
+    </div>
+
+  </div>
+
+  <!-- SPENDING PROGRESS BAR -->
+  <div class="card progress-section animate-fadeUp delay-2" *ngIf="income > 0">
+    <div class="progress-header">
+      <span>Spending Progress</span>
+      <span class="progress-pct">{{ getExpensePercent() }}% used</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill"
+        [style.width.%]="getExpensePercent()"
+        [class.safe]="getExpensePercent() < 60"
+        [class.caution]="getExpensePercent() >= 60 && getExpensePercent() < 85"
+        [class.danger]="getExpensePercent() >= 85">
+      </div>
+    </div>
+    <div class="progress-labels">
+      <span>₹0</span>
+      <span>₹{{ income | number:'1.0-0' }}</span>
+    </div>
+  </div>
+
+  <!-- INSIGHT BANNER -->
+  <div class="insight-banner animate-fadeUp delay-3" [class]="'insight-' + insightType">
+    {{ insight }}
+  </div>
+
+  <!-- RECENT TRANSACTIONS -->
+  <div class="recent-section animate-fadeUp delay-4">
+    <div class="section-header">
+      <h2>Recent Transactions</h2>
+      <a routerLink="/app/transactions" class="see-all">View All →</a>
+    </div>
+
+    <div *ngIf="recent.length === 0" class="empty-state">
+      <div class="empty-icon">📭</div>
+      <p>No transactions yet.</p>
+      <a routerLink="/app/add" class="btn-primary">Add your first transaction</a>
+    </div>
+
+    <div class="tx-list" *ngIf="recent.length > 0">
+      <div *ngFor="let t of recent; let i = index"
+        class="tx-item card animate-fadeUp"
+        [style.animation-delay]="(i * 0.05) + 's'">
+
+        <div class="tx-icon" [style.background]="getCategoryColor(t.category) + '22'">
+          <span>{{ getCategoryIcon(t.category) }}</span>
+        </div>
+
+        <div class="tx-info">
+          <div class="tx-title">{{ t.title }}</div>
+          <div class="tx-meta">{{ t.category }} · {{ t.date }}</div>
+        </div>
+
+        <div class="tx-amount" [class.income]="t.type === 'income'" [class.expense]="t.type === 'expense'">
+          {{ t.type === 'income' ? '+' : '-' }}₹{{ t.amount | number:'1.0-0' }}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

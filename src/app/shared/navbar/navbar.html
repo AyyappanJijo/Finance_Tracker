@@ -1,0 +1,29 @@
+<nav class="navbar" [class.scrolled]="scrolled">
+
+  <a class="logo" routerLink="/app/dashboard">
+    <span class="logo-icon">💸</span>
+    <span class="logo-text">FinTrack</span>
+  </a>
+
+  <div class="links" [class.open]="isOpen">
+    <a
+      *ngFor="let link of navLinks"
+      [routerLink]="link.path"
+      routerLinkActive="active"
+      (click)="closeMenu()"
+      class="nav-link"
+    >
+      <span class="nav-icon">{{ link.icon }}</span>
+      {{ link.label }}
+    </a>
+  </div>
+
+  <div class="balance-chip" [class.positive]="balance >= 0" [class.negative]="balance < 0">
+    {{ balance >= 0 ? '↑' : '↓' }} ₹{{ balance | number:'1.0-0' }}
+  </div>
+
+  <button class="hamburger" (click)="toggleMenu()" [class.active]="isOpen" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+
+</nav>

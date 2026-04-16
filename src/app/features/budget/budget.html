@@ -1,0 +1,46 @@
+<h1 class="page-title animate-fadeUp">🎯 Budget Goals</h1>
+<p class="sub-text animate-fadeUp delay-1">Set monthly spending limits per category and track your progress.</p>
+
+<div class="budget-grid">
+
+  <div
+    *ngFor="let item of budgetItems; let i = index"
+    class="card budget-card animate-fadeUp"
+    [style.animation-delay]="(i * 0.05) + 's'"
+    [class.over-budget]="item.status === 'danger'"
+  >
+
+    <div class="budget-header">
+      <div class="b-icon" [style.background]="item.color + '22'">{{ item.icon }}</div>
+      <div class="b-info">
+        <div class="b-name">{{ item.category }}</div>
+        <div class="b-status" [class]="'status-' + item.status">{{ getStatusLabel(item) }}</div>
+      </div>
+    </div>
+
+    <div class="budget-amounts">
+      <span class="spent">₹{{ item.spent | number:'1.0-0' }} spent</span>
+      <span class="limit" *ngIf="item.limit > 0">of ₹{{ item.limit | number:'1.0-0' }}</span>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="b-track" *ngIf="item.limit > 0">
+      <div class="b-fill"
+        [style.width.%]="item.percent"
+        [class]="'fill-' + item.status">
+      </div>
+    </div>
+
+    <!-- Limit Input -->
+    <div class="limit-input-row">
+      <label>Monthly limit (₹)</label>
+      <input type="number" [(ngModel)]="editLimits[item.category]" placeholder="0 = no limit" min="0" />
+    </div>
+
+  </div>
+
+</div>
+
+<div class="save-bar animate-fadeUp">
+  <button class="btn-primary" (click)="saveBudgets()">💾 Save All Budget Goals</button>
+</div>

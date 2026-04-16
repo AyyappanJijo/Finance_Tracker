@@ -1,0 +1,39 @@
+.insight-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding: 22px 28px;
+}
+
+.insight-text { font-size: 15px; font-weight: 500; flex: 1; }
+
+.insight-meta { display: flex; gap: 32px; }
+.meta-item { display: flex; flex-direction: column; gap: 2px; }
+.meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 700; }
+.meta-value { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: #fff; }
+.meta-value.positive { color: var(--accent-green); }
+.meta-value.negative { color: var(--accent-red); }
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.chart-card { padding: 24px; }
+.chart-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+
+.chart-wrap       { position: relative; height: 240px; }
+.chart-wrap-wide  { height: 260px; }
+
+.full { grid-column: span 2; }
+
+.empty-state { text-align: center; padding: 60px 24px; }
+
+@media (max-width: 768px) {
+  .charts-grid { grid-template-columns: 1fr; }
+  .full { grid-column: span 1; }
+}
